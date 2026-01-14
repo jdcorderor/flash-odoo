@@ -10,4 +10,4 @@ RUN pip3 install -r /tmp/requirements.txt --break-system-packages
 
 COPY ./custom_addons /mnt/extra-addons
 
-USER odoo
+USER root
