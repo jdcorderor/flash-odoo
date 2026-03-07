@@ -4,15 +4,6 @@ USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
-    python3-dev \
-    build-essential \
-    libpq-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libldap2-dev \
-    libsasl2-dev \
-    libjpeg-dev \
-    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
