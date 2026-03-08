@@ -15,6 +15,11 @@ RUN chown -R odoo:odoo /mnt/extra-addons /var/lib/odoo
 
 USER odoo
 
-ENTRYPOINT ["odoo"]
-
-CMD ["sh", "-c", "odoo --db_host=$DB_HOST --db_port=$DB_PORT --db_user=$DB_USER --db_password=$DB_PASSWORD --database=$DB_NAME --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons --http-port=8069 --http-interface=0.0.0.0"]
+CMD odoo --db_host=$DB_HOST \
+         --db_port=$DB_PORT \
+         --db_user=$DB_USER \
+         --db_password=$DB_PASSWORD \
+         --database=$DB_NAME \
+         --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons \
+         --http-port=8069 \
+         --http-interface=0.0.0.0
