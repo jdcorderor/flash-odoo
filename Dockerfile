@@ -20,6 +20,7 @@ CMD odoo --db_host=$DB_HOST \
          --db_user=$DB_USER \
          --db_password=$DB_PASSWORD \
          --database=$DB_NAME \
-         --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons \
+         --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons \
          --http-port=8069 \
-         --http-interface=0.0.0.0
+         --http-interface=0.0.0.0 \
+         -i base
