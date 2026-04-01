@@ -6,12 +6,10 @@
 
             <!-- Botón principal en la barra superior -->
             <div class="o_ve_rate_btn" t-on-click="toggleDropdown" title="Tasas de Cambio Venezuela">
-                <span class="o_ve_flag">🇻🇪</span>
                 <span class="o_ve_rate_label">
-                    <t t-if="state.loading">Bs…</t>
                     <t t-else="">
                         <span class="o_ve_rate_short">
-                            $<t t-esc="state.bcv_usd"/>
+                            <t t-esc="state.bcv_usd"/> Bs/$s
                         </span>
                     </t>
                 </span>
@@ -20,7 +18,7 @@
             <!-- Dropdown con el detalle de las tasas -->
             <div t-if="state.isOpen" class="o_ve_rate_dropdown">
                 <div class="o_ve_rate_dropdown_header">
-                    <span>🇻🇪 Tasas de Cambio</span>
+                    <span>Tasas de Cambio</span>
                     <button class="o_ve_rate_refresh_btn" t-on-click="refresh" t-att-disabled="state.refreshing">
                         <t t-if="state.refreshing">
                             <i class="fa fa-spinner fa-spin"/> Actualizando…
@@ -33,17 +31,17 @@
 
                 <div class="o_ve_rate_row">
                     <div class="o_ve_rate_source">
-                        <i class="fa fa-bank"/> BCV Dólar
+                        BCV Dólar
                     </div>
                     <div class="o_ve_rate_value">
                         <strong><t t-esc="state.bcv_usd"/></strong>
-                        <span class="o_ve_rate_unit">Bs/US$</span>
+                        <span class="o_ve_rate_unit">Bs/$</span>
                     </div>
                 </div>
 
                 <div class="o_ve_rate_row">
                     <div class="o_ve_rate_source">
-                        <i class="fa fa-bank"/> BCV Euro
+                        BCV Euro
                     </div>
                     <div class="o_ve_rate_value">
                         <strong><t t-esc="state.bcv_eur"/></strong>
@@ -53,7 +51,7 @@
 
                 <div class="o_ve_rate_row">
                     <div class="o_ve_rate_source">
-                        <i class="fa fa-btc"/> Binance USDT
+                        Binance USDT
                     </div>
                     <div class="o_ve_rate_value">
                         <strong><t t-esc="state.binance_usdt"/></strong>
