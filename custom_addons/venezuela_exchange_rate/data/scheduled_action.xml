@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_venezuela_exchange_rates" model="ir.cron">
+            <field name="name">Actualizar Tasas de Cambio Venezolanas</field>
+            <field name="model_id" ref="model_venezuela_exchange_rate"/>
+            <field name="state">code</field>
+            <field name="code">model.fetch_and_save_rates()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+    </data>
+</odoo>

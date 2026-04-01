@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Menú principal -->
+    <menuitem
+        id="menu_venezuela_rate_root"
+        name="Tasas VE"
+        sequence="100"
+    />
+
+    <!-- Submenú: Tasas de Cambio -->
+    <menuitem
+        id="menu_venezuela_rate_list"
+        name="Tasas de Cambio"
+        parent="menu_venezuela_rate_root"
+        action="action_venezuela_exchange_rate"
+        sequence="10"
+    />
+
+    <!-- Submenú: Actualizar Tasas -->
+    <menuitem
+        id="menu_venezuela_rate_refresh"
+        name="Actualizar Tasas Ahora"
+        parent="menu_venezuela_rate_root"
+        action="action_server_fetch_rates"
+        sequence="20"
+    />
+</odoo>

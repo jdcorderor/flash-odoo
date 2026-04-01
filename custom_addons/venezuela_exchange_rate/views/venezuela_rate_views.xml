@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ============================================================
+         Vista Lista (Tree)
+    ============================================================ -->
+    <record id="view_venezuela_rate_tree" model="ir.ui.view">
+        <field name="name">venezuela.exchange.rate.tree</field>
+        <field name="model">venezuela.exchange.rate</field>
+        <field name="arch" type="xml">
+            <list string="Tasas de Cambio Venezolanas" decoration-muted="bcv_usd == 0">
+                <field name="date" string="Fecha"/>
+                <field name="bcv_usd" string="BCV USD (Bs/$)" widget="float" digits="[16,4]"/>
+                <field name="bcv_eur" string="BCV EUR (Bs/€)" widget="float" digits="[16,4]"/>
+                <field name="binance_usdt" string="Binance USDT (Bs/USDT)" widget="float" digits="[16,4]"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Vista Formulario
+    ============================================================ -->
+    <record id="view_venezuela_rate_form" model="ir.ui.view">
+        <field name="name">venezuela.exchange.rate.form</field>
+        <field name="model">venezuela.exchange.rate</field>
+        <field name="arch" type="xml">
+            <form string="Tasa de Cambio Venezolana">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Tasas de Cambio Venezuela</h1>
+                        <h3 class="text-muted">
+                            <field name="date" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="BCV - Dólar (USD)">
+                            <field name="bcv_usd" string="Tasa BCV USD" widget="float" digits="[16,4]"/>
+                            <field name="bcv_usd_updated" string="Actualizado"/>
+                        </group>
+                        <group string="BCV - Euro (EUR)">
+                            <field name="bcv_eur" string="Tasa BCV EUR" widget="float" digits="[16,4]"/>
+                            <field name="bcv_eur_updated" string="Actualizado"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Binance USDT">
+                            <field name="binance_usdt" string="Tasa Binance USDT" widget="float" digits="[16,4]"/>
+                            <field name="binance_updated" string="Actualizado"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Acción de ventana
+    ============================================================ -->
+    <record id="action_venezuela_exchange_rate" model="ir.actions.act_window">
+        <field name="name">Tasas de Cambio Venezolanas</field>
+        <field name="res_model">venezuela.exchange.rate</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay tasas registradas aún.
+            </p>
+            <p>
+                Haz clic en <b>Actualizar Tasas</b> o espera a que la acción
+                programada obtenga las tasas automáticamente cada hora.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Acción de servidor: Actualizar Tasas manualmente
+    ============================================================ -->
+    <record id="action_server_fetch_rates" model="ir.actions.server">
+        <field name="name">Actualizar Tasas Ahora</field>
+        <field name="model_id" ref="model_venezuela_exchange_rate"/>
+        <field name="state">code</field>
+        <field name="code">
+env['venezuela.exchange.rate'].fetch_and_save_rates()
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'reload',
+}
+        </field>
+    </record>
+</odoo>

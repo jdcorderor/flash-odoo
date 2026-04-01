@@ -1,0 +1,164 @@
+/* ================================================================
+   Tasas de Cambio Venezuela - Estilos del Systray
+   ================================================================ */
+
+/* Botón en la barra superior */
+.o_ve_rate_systray {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.o_ve_rate_btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 0 8px;
+    height: 100%;
+    color: white;
+    font-size: 13px;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.o_ve_rate_btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.o_ve_flag {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.o_ve_rate_label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.o_ve_rate_short {
+    letter-spacing: 0.5px;
+}
+
+/* ================================================================
+   Dropdown con el detalle de las tasas
+   ================================================================ */
+.o_ve_rate_dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 1050;
+    min-width: 260px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    color: #333;
+    font-size: 13px;
+}
+
+/* Cabecera del dropdown */
+.o_ve_rate_dropdown_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #cf212a, #003f87);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.o_ve_rate_refresh_btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.o_ve_rate_refresh_btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.o_ve_rate_refresh_btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Filas de tasas */
+.o_ve_rate_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s;
+}
+
+.o_ve_rate_row:last-of-type {
+    border-bottom: none;
+}
+
+.o_ve_rate_row:hover {
+    background: #f8f9fa;
+}
+
+.o_ve_rate_source {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #555;
+    font-size: 12px;
+}
+
+.o_ve_rate_source .fa {
+    color: #003f87;
+    width: 14px;
+    text-align: center;
+}
+
+.o_ve_rate_value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.o_ve_rate_value strong {
+    font-size: 15px;
+    color: #cf212a;
+    font-weight: 700;
+}
+
+.o_ve_rate_unit {
+    font-size: 11px;
+    color: #888;
+}
+
+/* Pie del dropdown */
+.o_ve_rate_footer {
+    padding: 6px 14px;
+    background: #f8f9fa;
+    color: #888;
+    font-size: 11px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Mensaje de error */
+.o_ve_rate_error {
+    padding: 8px 14px;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 11px;
+    border-top: 1px solid #ffc107;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

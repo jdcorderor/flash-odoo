@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="venezuela_exchange_rate.VenezuelaRateSystray">
+        <div class="o_menu_systray_item o_ve_rate_systray" t-ref="root">
+
+            <!-- Botón principal en la barra superior -->
+            <div class="o_ve_rate_btn" t-on-click="toggleDropdown" title="Tasas de Cambio Venezuela">
+                <span class="o_ve_flag">🇻🇪</span>
+                <span class="o_ve_rate_label">
+                    <t t-if="state.loading">Bs…</t>
+                    <t t-else="">
+                        <span class="o_ve_rate_short">
+                            $<t t-esc="state.bcv_usd"/>
+                        </span>
+                    </t>
+                </span>
+            </div>
+
+            <!-- Dropdown con el detalle de las tasas -->
+            <div t-if="state.isOpen" class="o_ve_rate_dropdown">
+                <div class="o_ve_rate_dropdown_header">
+                    <span>🇻🇪 Tasas de Cambio</span>
+                    <button class="o_ve_rate_refresh_btn" t-on-click="refresh" t-att-disabled="state.refreshing">
+                        <t t-if="state.refreshing">
+                            <i class="fa fa-spinner fa-spin"/> Actualizando…
+                        </t>
+                        <t t-else="">
+                            <i class="fa fa-refresh"/> Actualizar
+                        </t>
+                    </button>
+                </div>
+
+                <div class="o_ve_rate_row">
+                    <div class="o_ve_rate_source">
+                        <i class="fa fa-bank"/> BCV Dólar
+                    </div>
+                    <div class="o_ve_rate_value">
+                        <strong><t t-esc="state.bcv_usd"/></strong>
+                        <span class="o_ve_rate_unit">Bs/US$</span>
+                    </div>
+                </div>
+
+                <div class="o_ve_rate_row">
+                    <div class="o_ve_rate_source">
+                        <i class="fa fa-bank"/> BCV Euro
+                    </div>
+                    <div class="o_ve_rate_value">
+                        <strong><t t-esc="state.bcv_eur"/></strong>
+                        <span class="o_ve_rate_unit">Bs/€</span>
+                    </div>
+                </div>
+
+                <div class="o_ve_rate_row">
+                    <div class="o_ve_rate_source">
+                        <i class="fa fa-btc"/> Binance USDT
+                    </div>
+                    <div class="o_ve_rate_value">
+                        <strong><t t-esc="state.binance_usdt"/></strong>
+                        <span class="o_ve_rate_unit">Bs/USDT</span>
+                    </div>
+                </div>
+
+                <div t-if="state.date" class="o_ve_rate_footer">
+                    <i class="fa fa-clock-o"/> Registro: <t t-esc="state.date"/>
+                </div>
+
+                <div t-if="state.error" class="o_ve_rate_error">
+                    <i class="fa fa-warning"/> <t t-esc="state.error"/>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
