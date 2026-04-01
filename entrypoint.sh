@@ -24,16 +24,21 @@ try:
     cur = conn.cursor()
 
     # Forzar almacenamiento en BD para todos los attachments nuevos.
-    # Esto evita que los asset bundles (CSS/JS/websocket worker) se guarden
-    # en el filesystem efímero y fallen al reiniciar el contenedor.
+    # ir_config_parameter requiere create_uid/write_uid/create_date/write_date (NOT NULL).
     cur.execute("""
-        INSERT INTO ir_config_parameter (key, value)
-        VALUES ('ir_attachment.location', 'db')
-        ON CONFLICT (key) DO UPDATE SET value = 'db'
+        INSERT INTO ir_config_parameter (key, value, create_uid, write_uid, create_date, write_date)
+        VALUES ('ir_attachment.location', 'db', 1, 1, NOW(), NOW())
+        ON CONFLICT (key) DO UPDATE SET value = 'db', write_uid = 1, write_date = NOW()
     """)
 
-    # Limpiar attachments stale que apuntan a archivos del filestore anterior.
-    cur.execute("DELETE FROM ir_attachment WHERE store_fname IS NOT NULL")
+    # Eliminar TODOS los asset bundles cacheados (CSS/JS/websocket worker).
+    # Esto incluye bus.websocket_worker_assets y cualquier bundle del run anterior
+    # que apunte a archivos del filestore efímero que ya no existen en disco.
+    cur.execute("""
+        DELETE FROM ir_attachment
+        WHERE (url LIKE '/web/assets/%' AND public = true)
+           OR store_fname IS NOT NULL
+    """)
     deleted = cur.rowcount
 
     conn.commit()
