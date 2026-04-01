@@ -51,63 +51,27 @@ class VenezuelaExchangeRate(models.Model):
             'binance_updated': '',
         }
 
-        # --- Tasas en USD (BCV y Binance) + EUR si está en la lista ---
+        # --- Tasas desde ve.dolarapi.com/v1/dolares ---
+        # fuente='oficial' → BCV USD, fuente='paralelo' → tasa paralelo/Binance
         try:
             resp = requests.get(f'{VE_DOLAR_API_BASE}/dolares', timeout=10)
             resp.raise_for_status()
             dolares = resp.json()
-            _logger.info('API /dolares respondió %s items', len(dolares) if isinstance(dolares, list) else type(dolares))
             for item in dolares:
                 fuente = (item.get('fuente') or '').lower()
-                nombre = (item.get('nombre') or '').lower()
                 promedio = float(item.get('promedio') or 0)
                 fecha = item.get('fechaActualizacion', '')
-                _logger.debug('Item API: fuente=%s nombre=%s promedio=%s', fuente, nombre, promedio)
-                if fuente == 'bcv' and 'euro' not in nombre and not result['bcv_usd']:
+                if fuente == 'oficial' and not result['bcv_usd']:
                     result['bcv_usd'] = promedio
                     result['bcv_usd_updated'] = fecha
-                elif fuente == 'binance' and not result['binance_usdt']:
+                elif fuente == 'paralelo' and not result['binance_usdt']:
                     result['binance_usdt'] = promedio
                     result['binance_updated'] = fecha
-                elif 'euro' in nombre and fuente == 'bcv' and not result['bcv_eur']:
-                    result['bcv_eur'] = promedio
-                    result['bcv_eur_updated'] = fecha
         except Exception as e:
-            _logger.error('Error al obtener tasas USD: %s', e)
-
-        # --- Tasa EUR (BCV) si no se obtuvo del listado principal ---
-        if not result['bcv_eur']:
-            for eur_url in [
-                f'{VE_DOLAR_API_BASE}/dolares/euro',
-                f'{VE_DOLAR_API_BASE}/euro',
-            ]:
-                try:
-                    eur_resp = requests.get(eur_url, timeout=10)
-                    eur_resp.raise_for_status()
-                    eur_data = eur_resp.json()
-
-                    if isinstance(eur_data, list):
-                        bcv_item = next(
-                            (i for i in eur_data if (i.get('fuente') or '').lower() == 'bcv'),
-                            eur_data[0] if eur_data else None,
-                        )
-                        if bcv_item:
-                            result['bcv_eur'] = float(bcv_item.get('promedio') or 0)
-                            result['bcv_eur_updated'] = bcv_item.get('fechaActualizacion', '')
-                    elif isinstance(eur_data, dict):
-                        result['bcv_eur'] = float(eur_data.get('promedio') or 0)
-                        result['bcv_eur_updated'] = eur_data.get('fechaActualizacion', '')
-
-                    if result['bcv_eur']:
-                        break
-                except Exception as e:
-                    _logger.warning('Error en %s: %s', eur_url, e)
-
-        if not result['bcv_eur']:
-            _logger.warning('No se pudo obtener la tasa BCV EUR.')
+            _logger.error('Error al obtener tasas: %s', e)
 
         # Retornar None si no se obtuvo ningún dato útil
-        if not any([result['bcv_usd'], result['bcv_eur'], result['binance_usdt']]):
+        if not any([result['bcv_usd'], result['binance_usdt']]):
             return None
 
         return result
