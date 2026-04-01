@@ -4,18 +4,14 @@
     <t t-name="venezuela_exchange_rate.VenezuelaRateSystray">
         <div class="o_menu_systray_item o_ve_rate_systray" t-ref="root">
 
-            <!-- Botón principal en la barra superior -->
             <div class="o_ve_rate_btn" t-on-click="toggleDropdown" title="Tasas de Cambio Venezuela">
                 <span class="o_ve_rate_label">
-                    <t t-else="">
-                        <span class="o_ve_rate_short">
-                            <t t-esc="state.bcv_usd"/> Bs/$s
-                        </span>
-                    </t>
+                    <span class="o_ve_rate_short">
+                        <t t-esc="state.bcv_usd"/> Bs/$
+                    </span>
                 </span>
             </div>
 
-            <!-- Dropdown con el detalle de las tasas -->
             <div t-if="state.isOpen" class="o_ve_rate_dropdown">
                 <div class="o_ve_rate_dropdown_header">
                     <span>Tasas de Cambio</span>
