@@ -17,10 +17,10 @@
                     <span>Tasas de Cambio</span>
                     <button class="o_ve_rate_refresh_btn" t-on-click="refresh" t-att-disabled="state.refreshing">
                         <t t-if="state.refreshing">
-                            <i class="fa fa-spinner fa-spin"/> Actualizando…
+                            <i class="fa fa-spinner fa-spin"/>
                         </t>
                         <t t-else="">
-                            <i class="fa fa-refresh"/> Actualizar
+                            <i class="fa fa-refresh"/>
                         </t>
                     </button>
                 </div>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div t-if="state.date" class="o_ve_rate_footer">
-                    <i class="fa fa-clock-o"/> Registro: <t t-esc="state.date"/>
+                    Registro: <t t-esc="state.date"/>
                 </div>
 
                 <div t-if="state.error" class="o_ve_rate_error">

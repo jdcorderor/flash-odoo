@@ -46,6 +46,33 @@ export class VenezuelaRateSystray extends Component {
     }
 
     /**
+     * Formatea una fecha en zona horaria UTC-4 (Caracas).
+     */
+    _formatUtcMinus4(value) {
+        if (!value) return "";
+
+        let dateValue = String(value).trim().replace(" ", "T");
+        if (!/[zZ]|[+-]\d{2}:\d{2}$/.test(dateValue)) {
+            // Fechas sin zona horaria explícita se interpretan como UTC.
+            dateValue += "Z";
+        }
+
+        const date = new Date(dateValue);
+        if (Number.isNaN(date.getTime())) return "";
+
+        return new Intl.DateTimeFormat("es-VE", {
+            timeZone: "America/Caracas",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+        }).format(date);
+    }
+
+    /**
      * Obtiene las tasas almacenadas en base de datos (vía RPC).
      */
     async loadRates() {
@@ -56,9 +83,7 @@ export class VenezuelaRateSystray extends Component {
             this.state.bcv_usd = this._fmt(result.bcv_usd);
             this.state.bcv_eur = this._fmt(result.bcv_eur);
             this.state.binance_usdt = this._fmt(result.binance_usdt);
-            this.state.date = result.date
-                ? new Date(result.date).toLocaleString("es-VE")
-                : "";
+            this.state.date = this._formatUtcMinus4(result.date);
         } catch (e) {
             this.state.bcv_usd = "Err";
             this.state.error = "No se pudo conectar al servidor.";
@@ -91,9 +116,7 @@ export class VenezuelaRateSystray extends Component {
                 this.state.bcv_usd = this._fmt(result.bcv_usd);
                 this.state.bcv_eur = this._fmt(result.bcv_eur);
                 this.state.binance_usdt = this._fmt(result.binance_usdt);
-                this.state.date = result.date
-                    ? new Date(result.date).toLocaleString("es-VE")
-                    : "";
+                this.state.date = this._formatUtcMinus4(result.date);
             } else {
                 this.state.error = "No se pudieron obtener las tasas. Intente más tarde.";
             }

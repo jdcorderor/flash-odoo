@@ -64,7 +64,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 14px;
-    background: linear-gradient(135deg, #cf212a, #003f87);
+    background: var(--NavBar-entry-backgroundColor, #714B67);
     color: #fff;
     font-weight: 700;
     font-size: 13px;
