@@ -15,8 +15,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chown -R odoo:odoo /mnt/extra-addons /var/lib/odoo && \
     chmod +x /entrypoint.sh
 
-USER odoo
-
 CMD /entrypoint.sh odoo \
          --db_host=$DB_HOST \
          --db_port=$DB_PORT \
