@@ -25,5 +25,4 @@ CMD /entrypoint.sh odoo \
          --database=$DB_NAME \
          --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons \
          --http-port=8069 \
-         --http-interface=0.0.0.0 \
-         --attachment-db-max-size=0
+         --http-interface=0.0.0.0

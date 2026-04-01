@@ -51,13 +51,12 @@ class VenezuelaExchangeRate(models.Model):
             'binance_updated': '',
         }
 
-        # --- Tasas desde ve.dolarapi.com/v1/dolares ---
+        # --- Tasas USD desde ve.dolarapi.com/v1/dolares ---
         # fuente='oficial' → BCV USD, fuente='paralelo' → tasa paralelo/Binance
         try:
             resp = requests.get(f'{VE_DOLAR_API_BASE}/dolares', timeout=10)
             resp.raise_for_status()
-            dolares = resp.json()
-            for item in dolares:
+            for item in resp.json():
                 fuente = (item.get('fuente') or '').lower()
                 promedio = float(item.get('promedio') or 0)
                 fecha = item.get('fechaActualizacion', '')
@@ -68,10 +67,25 @@ class VenezuelaExchangeRate(models.Model):
                     result['binance_usdt'] = promedio
                     result['binance_updated'] = fecha
         except Exception as e:
-            _logger.error('Error al obtener tasas: %s', e)
+            _logger.error('Error al obtener tasas USD: %s', e)
+
+        # --- Tasa EUR BCV desde ve.dolarapi.com/v1/euros ---
+        # fuente='oficial' → BCV EUR
+        try:
+            eur_resp = requests.get(f'{VE_DOLAR_API_BASE}/euros', timeout=10)
+            eur_resp.raise_for_status()
+            for item in eur_resp.json():
+                fuente = (item.get('fuente') or '').lower()
+                promedio = float(item.get('promedio') or 0)
+                fecha = item.get('fechaActualizacion', '')
+                if fuente == 'oficial' and not result['bcv_eur']:
+                    result['bcv_eur'] = promedio
+                    result['bcv_eur_updated'] = fecha
+        except Exception as e:
+            _logger.error('Error al obtener tasa EUR: %s', e)
 
         # Retornar None si no se obtuvo ningún dato útil
-        if not any([result['bcv_usd'], result['binance_usdt']]):
+        if not any([result['bcv_usd'], result['bcv_eur'], result['binance_usdt']]):
             return None
 
         return result
