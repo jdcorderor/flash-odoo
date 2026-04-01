@@ -10,12 +10,15 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt --break-system-packages
 
 COPY ./custom_addons /mnt/extra-addons
+COPY entrypoint.sh /entrypoint.sh
 
-RUN chown -R odoo:odoo /mnt/extra-addons /var/lib/odoo
+RUN chown -R odoo:odoo /mnt/extra-addons /var/lib/odoo && \
+    chmod +x /entrypoint.sh
 
 USER odoo
 
-CMD odoo --db_host=$DB_HOST \
+CMD /entrypoint.sh odoo \
+         --db_host=$DB_HOST \
          --db_port=$DB_PORT \
          --db_user=$DB_USER \
          --db_password=$DB_PASSWORD \
@@ -23,4 +26,4 @@ CMD odoo --db_host=$DB_HOST \
          --addons-path=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons \
          --http-port=8069 \
          --http-interface=0.0.0.0 \
-         --attachment-db-max-size=0 \
+         --attachment-db-max-size=0

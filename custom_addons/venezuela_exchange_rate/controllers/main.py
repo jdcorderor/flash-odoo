@@ -4,13 +4,13 @@ from odoo.http import request
 
 class VenezuelaRateController(http.Controller):
 
-    @http.route('/venezuela_exchange_rate/get_rates', type='json', auth='user')
+    @http.route('/venezuela_exchange_rate/get_rates', type='jsonrpc', auth='user')
     def get_rates(self):
         """Retorna las tasas más recientes almacenadas en BD."""
         rates = request.env['venezuela.exchange.rate'].get_current_rates()
         return rates
 
-    @http.route('/venezuela_exchange_rate/refresh_rates', type='json', auth='user')
+    @http.route('/venezuela_exchange_rate/refresh_rates', type='jsonrpc', auth='user')
     def refresh_rates(self):
         """Fuerza una actualización de las tasas desde la API."""
         env = request.env['venezuela.exchange.rate']

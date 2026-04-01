@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { rpc } from "@web/core/network/rpc";
 import { Component, useState, onWillStart, useRef, useExternalListener } from "@odoo/owl";
 
 /**
@@ -13,7 +13,6 @@ export class VenezuelaRateSystray extends Component {
     static props = {};
 
     setup() {
-        this.rpc = useService("rpc");
         this.rootRef = useRef("root");
 
         this.state = useState({
@@ -53,7 +52,7 @@ export class VenezuelaRateSystray extends Component {
         this.state.loading = true;
         this.state.error = "";
         try {
-            const result = await this.rpc("/venezuela_exchange_rate/get_rates");
+            const result = await rpc("/venezuela_exchange_rate/get_rates");
             this.state.bcv_usd = this._fmt(result.bcv_usd);
             this.state.bcv_eur = this._fmt(result.bcv_eur);
             this.state.binance_usdt = this._fmt(result.binance_usdt);
@@ -87,7 +86,7 @@ export class VenezuelaRateSystray extends Component {
         this.state.refreshing = true;
         this.state.error = "";
         try {
-            const result = await this.rpc("/venezuela_exchange_rate/refresh_rates");
+            const result = await rpc("/venezuela_exchange_rate/refresh_rates");
             if (result.success) {
                 this.state.bcv_usd = this._fmt(result.bcv_usd);
                 this.state.bcv_eur = this._fmt(result.bcv_eur);
